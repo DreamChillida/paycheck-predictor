@@ -82,13 +82,15 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
       {/* Date & PH Toggle */}
       <Card>
         <CardContent className="pt-6 space-y-4">
-          <div className="flex items-end gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1 space-y-2">
               <Label>Date</Label>
               <Popover>
                 <PopoverTrigger className="w-full justify-start text-left font-normal flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm hover:bg-accent">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, 'EEEE, d MMM yyyy') : <span>Pick a date</span>}
+                  <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+                  <span className="truncate">
+                    {date ? format(date, 'EEEE, d MMM yyyy') : <span>Pick a date</span>}
+                  </span>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
@@ -105,9 +107,9 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
               variant={isPH ? 'default' : 'outline'}
               size="sm"
               onClick={() => setIsPH(!isPH)}
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
             >
-              <Briefcase className="h-4 w-4" />
+              <Briefcase className="h-4 w-4 shrink-0" />
               {isPH ? 'Public Holiday' : 'Mark as PH'}
             </Button>
           </div>

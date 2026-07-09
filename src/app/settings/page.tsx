@@ -149,9 +149,9 @@ function RateField({
   suffix?: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <Label className="flex-1 text-sm">{label}</Label>
-      <div className="flex items-center gap-1">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
+      <Label className="text-sm">{label}</Label>
+      <div className="flex items-center gap-1 self-start sm:self-auto">
         {prefix && <span className="text-sm text-muted-foreground">{prefix}</span>}
         <Input
           type="number"

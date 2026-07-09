@@ -111,11 +111,11 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">My Fortnights</h1>
-          <Button onClick={createNewFortnight}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Fortnight
+        <div className="flex items-center justify-between gap-2">
+          <h1 className="text-xl sm:text-2xl font-bold">My Fortnights</h1>
+          <Button onClick={createNewFortnight} className="shrink-0">
+            <Plus className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">New Fortnight</span>
           </Button>
         </div>
 

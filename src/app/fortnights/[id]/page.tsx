@@ -95,12 +95,12 @@ export default function FortnightDetailPage() {
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
         {/* Back + Title */}
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
+        <div className="flex items-start gap-3">
+          <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="shrink-0 mt-0.5">
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold">{formatDateRange(fn.start_date, fn.end_date)}</h1>
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold leading-tight break-words">{formatDateRange(fn.start_date, fn.end_date)}</h1>
             <p className="text-sm text-muted-foreground">
               {fn.is_closed ? 'Closed' : 'Active'} &middot; {shifts.length} days logged
             </p>
@@ -180,27 +180,27 @@ export default function FortnightDetailPage() {
                   <CardTitle className="text-lg">Financial Summary</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Gross Earnings</span>
-                    <span>{formatCurrency(calc.gross_earnings)}</span>
+                  <div className="flex justify-between items-baseline gap-2">
+                    <span className="font-bold">Gross Earnings</span>
+                    <span className="font-bold text-lg sm:text-xl tabular-nums">{formatCurrency(calc.gross_earnings)}</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
                     <span>PAYG Tax</span>
-                    <span>-{formatCurrency(calc.payg_tax)}</span>
+                    <span className="tabular-nums">-{formatCurrency(calc.payg_tax)}</span>
                   </div>
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
                     <span>Accommodation</span>
-                    <span>-{formatCurrency(calc.accommodation_deduction)}</span>
+                    <span className="tabular-nums">-{formatCurrency(calc.accommodation_deduction)}</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between text-lg font-bold text-green-600">
+                  <div className="flex justify-between items-baseline gap-2 text-lg sm:text-xl font-bold text-green-600">
                     <span>Net Payment</span>
-                    <span>{formatCurrency(calc.net_payment)}</span>
+                    <span className="tabular-nums">{formatCurrency(calc.net_payment)}</span>
                   </div>
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
                     <span>Superannuation (SG)</span>
-                    <span>{formatCurrency(calc.super_contribution)}</span>
+                    <span className="tabular-nums">{formatCurrency(calc.super_contribution)}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -269,13 +269,13 @@ export default function FortnightDetailPage() {
           </Tabs>
         ) : null}
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Button
             variant="outline"
             className="flex-1"
             onClick={() => router.push(`/shifts/new?fn_id=${fn.id}`)}
           >
-            <Plus className="h-4 w-4 mr-2" /> Add Shift
+            <Plus className="h-4 w-4 mr-2 shrink-0" /> Add Shift
           </Button>
           <Button variant="secondary" className="flex-1" onClick={() => router.push('/settings')}>
             Adjust Rates
@@ -292,13 +292,13 @@ function BreakdownRow({ label, value, rate, bold }: { label: string; value: stri
   const total = rate && numVal ? (numVal / 60) * rate : rate && value.includes('×') ? rate * (parseInt(value) || 1) : undefined;
 
   return (
-    <div className={`flex justify-between ${bold ? 'text-base' : 'text-sm'}`}>
+    <div className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 ${bold ? 'text-base' : 'text-sm'}`}>
       <span className={bold ? 'font-bold' : ''}>{label}</span>
-      <span className="text-right">
+      <span className="sm:text-right break-words text-balance">
         <span className={bold ? 'font-bold' : ''}>{value}</span>
         {rate && total !== undefined && (
-          <span className="text-muted-foreground ml-2">
-            × ${rate.toFixed(2)} = {formatCurrency(total)}
+          <span className="text-muted-foreground whitespace-nowrap">
+            {' × '}${rate.toFixed(2)} = {formatCurrency(total)}
           </span>
         )}
       </span>
@@ -308,9 +308,9 @@ function BreakdownRow({ label, value, rate, bold }: { label: string; value: stri
 
 function SummaryStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between text-sm">
+    <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 text-sm">
       <span className="text-muted-foreground">{label}</span>
-      <span>{value}</span>
+      <span className="text-balance">{value}</span>
     </div>
   );
 }
