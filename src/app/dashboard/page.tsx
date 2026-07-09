@@ -126,9 +126,9 @@ export default function DashboardPage() {
               <p className="text-muted-foreground text-center">
                 No fortnights yet. Create your first one to start logging shifts.
               </p>
-              <Button onClick={createNewFortnight}>
+              <Button onClick={() => setShowNewFn(true)}>
                 <Plus className="h-4 w-4 mr-2" />
-                Start First Fortnight
+                {t.dashboard.startFirst}
               </Button>
             </CardContent>
           </Card>
