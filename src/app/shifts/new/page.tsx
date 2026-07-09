@@ -140,6 +140,7 @@ function NewShiftForm() {
           onSubmit={handleSubmit}
           onCancel={() => router.back()}
           initialData={preselectedDate ? { shift_date: preselectedDate } : undefined}
+          fortnightRange={fortnight ? { start: fortnight.start_date, end: fortnight.end_date } : undefined}
         />
       </main>
     </div>

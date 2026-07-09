@@ -131,7 +131,7 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto max-w-4xl px-4 py-6 space-y-6">
+      <main className="container mx-auto max-w-4xl px-4 py-6 space-y-6 min-w-0 overflow-hidden">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
             <ArrowLeft className="h-5 w-5" />
@@ -140,10 +140,10 @@ export default function AnalyticsPage() {
         </div>
 
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="trends">Trends</TabsTrigger>
-            <TabsTrigger value="distribution">Distribution</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 min-w-0">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm min-w-0">Overview</TabsTrigger>
+            <TabsTrigger value="trends" className="text-xs sm:text-sm min-w-0">Trends</TabsTrigger>
+            <TabsTrigger value="distribution" className="text-xs sm:text-sm min-w-0">Distribution</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">

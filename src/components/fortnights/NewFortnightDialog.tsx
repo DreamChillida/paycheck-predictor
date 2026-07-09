@@ -113,7 +113,9 @@ export function NewFortnightDialog({ open, onOpenChange }: NewFortnightDialogPro
                 <Calendar
                   mode="single"
                   selected={startDate}
-                  onSelect={(d) => { setStartDate(d); setSelectedDay(undefined); }}
+                  onSelect={(d) => { setStartDate(d ? getMonday(d) : undefined); setSelectedDay(undefined); }}
+                  disabled={[{ dayOfWeek: [0, 2, 3, 4, 5, 6] }]}
+                  weekStartsOn={1}
                 />
               </PopoverContent>
             </Popover>

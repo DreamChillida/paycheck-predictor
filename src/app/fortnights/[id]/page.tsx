@@ -110,7 +110,7 @@ export default function FortnightDetailPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
+      <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6 min-w-0 overflow-hidden">
         {/* Back + Title + Delete */}
         <div className="flex items-start gap-3">
           <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="shrink-0 mt-0.5">
@@ -155,10 +155,10 @@ export default function FortnightDetailPage() {
           </Card>
         ) : calc ? (
           <Tabs defaultValue="breakdown">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
-              <TabsTrigger value="days">Daily Log</TabsTrigger>
-              <TabsTrigger value="summary">Summary</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 min-w-0">
+              <TabsTrigger value="breakdown" className="text-xs sm:text-sm min-w-0">Breakdown</TabsTrigger>
+              <TabsTrigger value="days" className="text-xs sm:text-sm min-w-0">Daily Log</TabsTrigger>
+              <TabsTrigger value="summary" className="text-xs sm:text-sm min-w-0">Summary</TabsTrigger>
             </TabsList>
 
             {/* BREAKDOWN TAB */}

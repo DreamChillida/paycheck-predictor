@@ -18,9 +18,10 @@ interface ShiftEntryFormProps {
   initialData?: Partial<ShiftFormData>;
   onSubmit: (data: ShiftFormData) => Promise<void>;
   onCancel?: () => void;
+  fortnightRange?: { start: string; end: string };
 }
 
-export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFormProps) {
+export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange }: ShiftEntryFormProps) {
   const [date, setDate] = useState<Date | undefined>(
     initialData?.shift_date ? new Date(initialData.shift_date + 'T00:00:00') : undefined
   );
@@ -97,6 +98,10 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
                     mode="single"
                     selected={date}
                     onSelect={setDate}
+                    disabled={fortnightRange ? [
+                      { before: new Date(fortnightRange.start + 'T00:00:00') },
+                      { after: new Date(fortnightRange.end + 'T00:00:00') },
+                    ] : undefined}
                   />
                 </PopoverContent>
               </Popover>
