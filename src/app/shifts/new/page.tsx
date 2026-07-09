@@ -24,6 +24,7 @@ function NewShiftForm() {
   const [loading, setLoading] = useState(true);
 
   const fnId = searchParams.get('fn_id');
+  const preselectedDate = searchParams.get('date');
 
   useEffect(() => {
     const init = async () => {
@@ -135,7 +136,11 @@ function NewShiftForm() {
         <h1 className="text-2xl font-bold mb-6">
           {fortnight ? `Log Shift for ${fortnight.start_date} — ${fortnight.end_date}` : 'New Shift'}
         </h1>
-        <ShiftEntryForm onSubmit={handleSubmit} onCancel={() => router.back()} />
+        <ShiftEntryForm
+          onSubmit={handleSubmit}
+          onCancel={() => router.back()}
+          initialData={preselectedDate ? { shift_date: preselectedDate } : undefined}
+        />
       </main>
     </div>
   );

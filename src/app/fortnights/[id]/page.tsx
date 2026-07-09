@@ -162,7 +162,7 @@ export default function FortnightDetailPage() {
             </TabsList>
 
             {/* BREAKDOWN TAB */}
-            <TabsContent value="breakdown" className="space-y-4">
+            <TabsContent value="breakdown" className="flex flex-col space-y-4 min-w-0">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Hours Breakdown</CardTitle>
@@ -216,28 +216,28 @@ export default function FortnightDetailPage() {
                 <CardHeader>
                   <CardTitle className="text-lg">Financial Summary</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between items-baseline gap-2">
-                    <span className="font-bold">Gross Earnings</span>
-                    <span className="font-bold text-lg sm:text-xl tabular-nums">{formatCurrency(calc.gross_earnings)}</span>
+                <CardContent className="space-y-3 min-w-0">
+                  <div className="flex justify-between items-baseline gap-2 min-w-0">
+                    <span className="font-bold break-words">Gross Earnings</span>
+                    <span className="font-bold text-lg sm:text-xl tabular-nums shrink-0">{formatCurrency(calc.gross_earnings)}</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
-                    <span>PAYG Tax</span>
-                    <span className="tabular-nums">-{formatCurrency(calc.payg_tax)}</span>
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground min-w-0">
+                    <span className="break-words">PAYG Tax</span>
+                    <span className="tabular-nums shrink-0">-{formatCurrency(calc.payg_tax)}</span>
                   </div>
-                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
-                    <span>Accommodation</span>
-                    <span className="tabular-nums">-{formatCurrency(calc.accommodation_deduction)}</span>
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground min-w-0">
+                    <span className="break-words">Accommodation</span>
+                    <span className="tabular-nums shrink-0">-{formatCurrency(calc.accommodation_deduction)}</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-baseline gap-2 text-lg sm:text-xl font-bold text-green-600">
-                    <span>Net Payment</span>
-                    <span className="tabular-nums">{formatCurrency(calc.net_payment)}</span>
+                  <div className="flex justify-between items-baseline gap-2 text-lg sm:text-xl font-bold text-green-600 min-w-0">
+                    <span className="break-words">Net Payment</span>
+                    <span className="tabular-nums shrink-0">{formatCurrency(calc.net_payment)}</span>
                   </div>
-                  <div className="flex justify-between gap-2 text-sm text-muted-foreground">
-                    <span>Superannuation (SG)</span>
-                    <span className="tabular-nums">{formatCurrency(calc.super_contribution)}</span>
+                  <div className="flex justify-between gap-2 text-sm text-muted-foreground min-w-0">
+                    <span className="break-words">Superannuation (SG)</span>
+                    <span className="tabular-nums shrink-0">{formatCurrency(calc.super_contribution)}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -324,14 +324,13 @@ export default function FortnightDetailPage() {
 }
 
 function BreakdownRow({ label, value, rate, bold }: { label: string; value: string; rate?: number; bold?: boolean }) {
-  const hours = parseFloat(value.replace('h', ':').split(':')[0] || '0');
   const numVal = parseFloat(value.replace(/[^0-9.]/g, ''));
   const total = rate && numVal ? (numVal / 60) * rate : rate && value.includes('×') ? rate * (parseInt(value) || 1) : undefined;
 
   return (
-    <div className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 ${bold ? 'text-base' : 'text-sm'}`}>
-      <span className={bold ? 'font-bold' : ''}>{label}</span>
-      <span className="sm:text-right break-words text-balance">
+    <div className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 min-w-0 ${bold ? 'text-base' : 'text-sm'}`}>
+      <span className={`break-words ${bold ? 'font-bold' : ''}`}>{label}</span>
+      <span className="sm:text-right break-words text-balance min-w-0">
         <span className={bold ? 'font-bold' : ''}>{value}</span>
         {rate && total !== undefined && (
           <span className="text-muted-foreground whitespace-nowrap">

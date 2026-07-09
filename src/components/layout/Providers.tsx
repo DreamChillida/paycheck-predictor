@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
 import { ThemeProvider } from 'next-themes';
+import { LocaleProvider } from '@/components/i18n/LocaleProvider';
 import { Toaster } from '@/components/ui/sonner';
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -20,10 +21,12 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        <Toaster />
-      </QueryClientProvider>
+      <LocaleProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+          <Toaster />
+        </QueryClientProvider>
+      </LocaleProvider>
     </ThemeProvider>
   );
 }

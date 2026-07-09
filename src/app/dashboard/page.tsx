@@ -16,17 +16,21 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Header } from '@/components/layout/Header';
+import { NewFortnightDialog } from '@/components/fortnights/NewFortnightDialog';
+import { useLocale } from '@/components/i18n/LocaleProvider';
 import { toast } from 'sonner';
-import { calculateFortnight, getFortnightRange, minutesToHours, formatMinutes, formatCurrency } from '@/lib/calculations';
+import { calculateFortnight, minutesToHours, formatMinutes, formatCurrency } from '@/lib/calculations';
 import { DEFAULT_RATES, DEFAULT_ACCOMMODATION } from '@/lib/rates';
 import type { ShiftEntry, Fortnight as FortnightType, FortnightCalculation, PayRates } from '@/types';
 
 export default function DashboardPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, locale } = useLocale();
   const [loading, setLoading] = useState(true);
   const [fortnights, setFortnights] = useState<(FortnightType & { calc: FortnightCalculation | null })[]>([]);
   const [rates, setRates] = useState<PayRates>(DEFAULT_RATES);
+  const [showNewFn, setShowNewFn] = useState(false);
 
   async function loadData() {
     const { data: { user } } = await supabase.auth.getUser();
@@ -91,50 +95,12 @@ export default function DashboardPage() {
     }
   };
 
-  const createNewFortnight = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    const today = new Date().toISOString().split('T')[0];
-    const range = getFortnightRange(today);
-
-    const { data: existing } = await supabase
-      .from('fortnights')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('start_date', range.start)
-      .single();
-
-    if (existing) {
-      router.push(`/shifts/new?fn_id=${existing.id}`);
-      return;
-    }
-
-    const { data: fn, error } = await supabase
-      .from('fortnights')
-      .insert({
-        user_id: user.id,
-        start_date: range.start,
-        end_date: range.end,
-        accommodation_amount: DEFAULT_ACCOMMODATION,
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    router.push(`/shifts/new?fn_id=${fn.id}`);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
         <div className="flex items-center justify-between gap-2">
-          <h1 className="text-xl sm:text-2xl font-bold">My Fortnights</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">{t.dashboard.title}</h1>
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon-sm" onClick={() => router.push('/analytics')} title="Analytics">
               <BarChart3 className="h-4 w-4" />
@@ -142,12 +108,14 @@ export default function DashboardPage() {
             <Button variant="ghost" size="icon-sm" onClick={() => router.push('/export')} title="Export">
               <Download className="h-4 w-4" />
             </Button>
-            <Button onClick={createNewFortnight} className="shrink-0">
+            <Button onClick={() => setShowNewFn(true)} className="shrink-0">
               <Plus className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">New Fortnight</span>
+              <span className="hidden sm:inline">{t.nav.newFortnight}</span>
             </Button>
           </div>
         </div>
+
+        <NewFortnightDialog open={showNewFn} onOpenChange={setShowNewFn} />
 
         {loading ? (
           <div className="text-center py-12 text-muted-foreground">Loading...</div>
@@ -174,9 +142,9 @@ export default function DashboardPage() {
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between gap-2">
                   <CardTitle className="text-sm sm:text-lg break-words min-w-0">
-                    {new Date(fn.start_date + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {new Date(fn.start_date + 'T00:00:00').toLocaleDateString(locale === 'es' ? 'es-ES' : locale === 'fr' ? 'fr-FR' : 'en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                     {' — '}
-                    {new Date(fn.end_date + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {new Date(fn.end_date + 'T00:00:00').toLocaleDateString(locale === 'es' ? 'es-ES' : locale === 'fr' ? 'fr-FR' : 'en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </CardTitle>
                   <div className="flex items-center gap-1 shrink-0">
                     <Dialog>
@@ -188,14 +156,14 @@ export default function DashboardPage() {
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Delete Fortnight</DialogTitle>
+                          <DialogTitle>{t.dashboard.deleteTitle}</DialogTitle>
                           <DialogDescription>
-                            Are you sure you want to delete this fortnight and all its shifts? This action cannot be undone.
+                            {t.dashboard.deleteDesc}
                           </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                           <Button variant="destructive" onClick={(e) => deleteFortnight(fn.id, e)}>
-                            Delete
+                            {t.dashboard.delete}
                           </Button>
                         </DialogFooter>
                       </DialogContent>
@@ -208,15 +176,15 @@ export default function DashboardPage() {
                 {fn.calc ? (
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground">Hours</p>
+                      <p className="text-muted-foreground">{t.dashboard.hours}</p>
                       <p className="font-semibold">{formatMinutes(fn.calc.total_minutes)}</p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Gross</p>
+                      <p className="text-muted-foreground">{t.dashboard.gross}</p>
                       <p className="font-semibold">{formatCurrency(fn.calc.gross_earnings)}</p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Net</p>
+                      <p className="text-muted-foreground">{t.dashboard.net}</p>
                       <p className="font-semibold">{formatCurrency(fn.calc.net_payment)}</p>
                     </div>
                   </div>

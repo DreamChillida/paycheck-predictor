@@ -33,3 +33,13 @@ export function formatDateRange(start: string, end: string): string {
 export function getWeekdayAllowanceUnits(minutes: number): number {
   return Math.round(minutes / 15) * 0.25;
 }
+
+export function getFortnightRange(dateStr: string): { start: string; end: string } {
+  const date = new Date(dateStr);
+  const start = getMonday(date);
+  const end = getSundayAfter(date);
+  return {
+    start: start.toISOString().split('T')[0],
+    end: end.toISOString().split('T')[0],
+  };
+}
