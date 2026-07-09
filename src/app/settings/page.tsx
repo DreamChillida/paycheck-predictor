@@ -21,11 +21,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [rates, setRates] = useState<PayRates>(DEFAULT_RATES);
 
-  useEffect(() => {
-    loadRates();
-  }, []);
-
-  const loadRates = async () => {
+  async function loadRates() {
     const { data } = await supabase
       .from('pay_rates')
       .select('*')
@@ -35,7 +31,12 @@ export default function SettingsPage() {
 
     if (data) setRates(data);
     setLoading(false);
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadRates();
+  }, []);
 
   const update = (key: keyof PayRates, value: string) => {
     const num = parseFloat(value);

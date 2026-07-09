@@ -154,14 +154,52 @@ Public Holiday:
 3. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in Vercel env vars
 4. Push GitHub repo to Vercel (auto-deploy)
 
+## Bug Fixes & UX Improvements (v0.2)
+
+### Fixed: Label Overlap in Shift Entry Form
+- All time input grids changed from `grid-cols-2` to `grid-cols-1 sm:grid-cols-2` to prevent label overlap on narrow screens
+- Labels use `text-xs` on mobile, `text-sm` on desktop
+- Time inputs have `w-full` to fill available space
+- Applies to: Shift 1/2 start/finish times, break start/finish times
+
+### Fixed: Fortnight Deletion
+- **Dashboard**: Each fortnight card has a trash button (stops card click propagation) with confirmation dialog
+- **Detail page**: Trash button in header area with confirmation dialog
+- Shifts cascade-delete via DB foreign key constraint
+- Toast notifications on success/failure
+- Dashboard list updates optimistically after delete
+- Navigates back to dashboard after deleting from detail page
+
+### Added: Dark Mode
+- `next-themes` ThemeProvider wraps the app with `attribute="class"` strategy
+- Dark CSS variables already present in `globals.css` (`.dark` class)
+- Header has a sun/moon toggle button with animated rotation transition
+- Respects system preference (`defaultTheme="system"`)
+- Toggle cycles between dark/light
+
+### Added: Analytics Page (`/analytics`)
+- **Overview tab**: 4 summary stat cards (avg gross, avg net, avg hours, total fortnights) + line chart of gross/net over time
+- **Trends tab**: Bar chart of hours per fortnight
+- **Distribution tab**: Pie chart of latest fortnight hour breakdown + pie chart of day type distribution across all history
+- Uses Recharts (`ResponsiveContainer`, `BarChart`, `LineChart`, `PieChart`)
+- Empty state when no data exists
+
+### Added: Export Page (`/export`)
+- CSV export: Downloads all fortnights as a CSV with headers (dates, hours by category, earnings, tax, net, super)
+- PDF export: Placeholder (prints "coming soon" toast), ready for `pdf-lib` integration
+- Accessible from dashboard via download icon button
+- Shows count of available fortnights
+
+### Navigation Updates
+- Dashboard header now has analytics (chart icon) and export (download icon) buttons next to "New Fortnight"
+- Both pages have back navigation to dashboard
+
 ## Future Enhancements (Post-MVP)
 
 - [ ] Multiple pay rate profiles (different roles/venues)
 - [ ] PDF payslip import/scan
 - [ ] Shift templates (recurring schedules)
 - [ ] Team view (manager dashboard)
-- [ ] Export to CSV/PDF
-- [ ] Dark mode toggle
 - [ ] Push notifications for shift reminders
 - [ ] Offline support (PWA)
-- [ ] Historical analytics and trends
+- [ ] Pay comparison (actual vs predicted)

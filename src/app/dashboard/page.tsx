@@ -3,10 +3,20 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Plus, ChevronRight, Clock } from 'lucide-react';
+import { Plus, ChevronRight, Clock, Trash2, BarChart3, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Header } from '@/components/layout/Header';
+import { toast } from 'sonner';
 import { calculateFortnight, getFortnightRange, minutesToHours, formatMinutes, formatCurrency } from '@/lib/calculations';
 import { DEFAULT_RATES, DEFAULT_ACCOMMODATION } from '@/lib/rates';
 import type { ShiftEntry, Fortnight as FortnightType, FortnightCalculation, PayRates } from '@/types';
@@ -18,11 +28,7 @@ export default function DashboardPage() {
   const [fortnights, setFortnights] = useState<(FortnightType & { calc: FortnightCalculation | null })[]>([]);
   const [rates, setRates] = useState<PayRates>(DEFAULT_RATES);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
+  async function loadData() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       router.push('/login');
@@ -67,6 +73,22 @@ export default function DashboardPage() {
 
     setFortnights(enriched);
     setLoading(false);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadData();
+  }, []);
+
+  const deleteFortnight = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const { error } = await supabase.from('fortnights').delete().eq('id', id);
+    if (error) {
+      toast.error('Failed to delete fortnight');
+    } else {
+      toast.success('Fortnight deleted');
+      setFortnights(prev => prev.filter(f => f.id !== id));
+    }
   };
 
   const createNewFortnight = async () => {
@@ -113,10 +135,18 @@ export default function DashboardPage() {
       <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
         <div className="flex items-center justify-between gap-2">
           <h1 className="text-xl sm:text-2xl font-bold">My Fortnights</h1>
-          <Button onClick={createNewFortnight} className="shrink-0">
-            <Plus className="h-4 w-4 sm:mr-2" />
-            <span className="hidden sm:inline">New Fortnight</span>
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon-sm" onClick={() => router.push('/analytics')} title="Analytics">
+              <BarChart3 className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon-sm" onClick={() => router.push('/export')} title="Export">
+              <Download className="h-4 w-4" />
+            </Button>
+            <Button onClick={createNewFortnight} className="shrink-0">
+              <Plus className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">New Fortnight</span>
+            </Button>
+          </div>
         </div>
 
         {loading ? (
@@ -138,17 +168,40 @@ export default function DashboardPage() {
           fortnights.map((fn) => (
             <Card
               key={fn.id}
-              className="cursor-pointer hover:shadow-md transition-shadow"
+              className="cursor-pointer hover:shadow-md transition-shadow relative"
               onClick={() => router.push(`/fortnights/${fn.id}`)}
             >
               <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="text-sm sm:text-lg break-words min-w-0">
                     {new Date(fn.start_date + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                     {' — '}
                     {new Date(fn.end_date + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </CardTitle>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Dialog>
+                      <DialogTrigger
+                        render={<Button variant="ghost" size="icon-sm" className="text-destructive hover:text-destructive" />}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Delete Fortnight</DialogTitle>
+                          <DialogDescription>
+                            Are you sure you want to delete this fortnight and all its shifts? This action cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                          <Button variant="destructive" onClick={(e) => deleteFortnight(fn.id, e)}>
+                            Delete
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>

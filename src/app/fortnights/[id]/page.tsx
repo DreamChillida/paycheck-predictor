@@ -1,15 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useRouter, useParams } from 'next/navigation';
-import { Plus, Pencil, ArrowLeft } from 'lucide-react';
+import { Plus, Pencil, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter,
+  DialogHeader, DialogTitle, DialogTrigger,
+} from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Header } from '@/components/layout/Header';
+import { toast } from 'sonner';
 import { calculateFortnight, formatMinutes, formatCurrency, minutesToHours } from '@/lib/calculations';
 import { DEFAULT_RATES, DEFAULT_ACCOMMODATION } from '@/lib/rates';
 import { formatDateRange, getWeekdayAllowanceUnits } from '@/lib/date-utils';
@@ -25,11 +30,7 @@ export default function FortnightDetailPage() {
   const [rates, setRates] = useState<PayRates>(DEFAULT_RATES);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadData();
-  }, [params.id]);
-
-  const loadData = async () => {
+  async function loadData() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.push('/login'); return; }
 
@@ -66,7 +67,23 @@ export default function FortnightDetailPage() {
     }
 
     setLoading(false);
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadData();
+  }, [params.id]);
+
+  const deleteFortnight = useCallback(async () => {
+    const supabase = createClient();
+    const { error } = await supabase.from('fortnights').delete().eq('id', params.id);
+    if (error) {
+      toast.error('Failed to delete fortnight');
+    } else {
+      toast.success('Fortnight deleted');
+      router.push('/dashboard');
+    }
+  }, [params.id, router]);
 
   const dayTypeColor = (dt: string) => {
     const map: Record<string, string> = {
@@ -94,17 +111,37 @@ export default function FortnightDetailPage() {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-6 space-y-6">
-        {/* Back + Title */}
+        {/* Back + Title + Delete */}
         <div className="flex items-start gap-3">
           <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="shrink-0 mt-0.5">
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h1 className="text-lg sm:text-2xl font-bold leading-tight break-words">{formatDateRange(fn.start_date, fn.end_date)}</h1>
             <p className="text-sm text-muted-foreground">
               {fn.is_closed ? 'Closed' : 'Active'} &middot; {shifts.length} days logged
             </p>
           </div>
+          <Dialog>
+            <DialogTrigger
+              render={<Button variant="ghost" size="icon-sm" className="text-destructive hover:text-destructive shrink-0 mt-0.5" />}
+            >
+              <Trash2 className="h-5 w-5" />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Delete Fortnight</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete this fortnight and all its shifts? This cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="destructive" onClick={deleteFortnight}>
+                  Delete
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {!hasShifts ? (
@@ -224,10 +261,10 @@ export default function FortnightDetailPage() {
                     </div>
 
                     {day.shifts.map((s, idx) => (
-                      <div key={idx} className="text-sm text-muted-foreground flex justify-between">
-                        <span>
-                          Shift {idx + 1}: {s.start} — {s.end}
-                          {s.break_minutes > 0 && ` (break: ${s.break_minutes}m)`}
+                      <div key={idx} className="text-xs sm:text-sm text-muted-foreground flex justify-between gap-2">
+                        <span className="break-all min-w-0">
+                          Shift {idx + 1}: {s.start}—{s.end}
+                          {s.break_minutes > 0 && ` (brk: ${s.break_minutes}m)`}
                         </span>
                       </div>
                     ))}

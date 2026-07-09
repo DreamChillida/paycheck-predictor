@@ -130,23 +130,25 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
             <h3 className="font-semibold">Shift 1</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="s1s">Start Time</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="s1s" className="text-xs sm:text-sm">Starting Hour</Label>
               <Input
                 id="s1s"
                 type="time"
                 value={s1s}
                 onChange={(e) => setS1s(e.target.value)}
+                className="w-full"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="s1e">Finish Time</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="s1e" className="text-xs sm:text-sm">Finish Hour</Label>
               <Input
                 id="s1e"
                 type="time"
                 value={s1e}
                 onChange={(e) => setS1e(e.target.value)}
+                className="w-full"
               />
             </div>
           </div>
@@ -156,23 +158,25 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
             <Coffee className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">Break (optional)</span>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="s1bs">Break Start</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="s1bs" className="text-xs sm:text-sm">Break Start</Label>
               <Input
                 id="s1bs"
                 type="time"
                 value={s1bs}
                 onChange={(e) => setS1bs(e.target.value)}
+                className="w-full"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="s1be">Break Finish</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="s1be" className="text-xs sm:text-sm">Break Finish</Label>
               <Input
                 id="s1be"
                 type="time"
                 value={s1be}
                 onChange={(e) => setS1be(e.target.value)}
+                className="w-full"
               />
             </div>
           </div>
@@ -204,23 +208,25 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="s2s">Start Time</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="s2s" className="text-xs sm:text-sm">Starting Hour</Label>
                 <Input
                   id="s2s"
                   type="time"
                   value={s2s}
                   onChange={(e) => setS2s(e.target.value)}
+                  className="w-full"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="s2e">Finish Time</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="s2e" className="text-xs sm:text-sm">Finish Hour</Label>
                 <Input
                   id="s2e"
                   type="time"
                   value={s2e}
                   onChange={(e) => setS2e(e.target.value)}
+                  className="w-full"
                 />
               </div>
             </div>
@@ -229,23 +235,25 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel }: ShiftEntryFo
               <Coffee className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">Break (optional)</span>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="s2bs">Break Start</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="s2bs" className="text-xs sm:text-sm">Break Start</Label>
                 <Input
                   id="s2bs"
                   type="time"
                   value={s2bs}
                   onChange={(e) => setS2bs(e.target.value)}
+                  className="w-full"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="s2be">Break Finish</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="s2be" className="text-xs sm:text-sm">Break Finish</Label>
                 <Input
                   id="s2be"
                   type="time"
                   value={s2be}
                   onChange={(e) => setS2be(e.target.value)}
+                  className="w-full"
                 />
               </div>
             </div>
