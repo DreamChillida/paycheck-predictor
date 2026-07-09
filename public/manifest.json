@@ -1,0 +1,9 @@
+{
+  "name": "Paycheck Predictor",
+  "short_name": "Paycheck",
+  "description": "Log your shifts and predict your pay",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
