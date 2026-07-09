@@ -242,7 +242,7 @@ export default function AnalyticsPage() {
                         cx="50%"
                         cy="50%"
                         outerRadius={80}
-                        label={({ name, hours }) => `${name}: ${hours.toFixed(1)}h`}
+                        label={(entry) => `${entry.name}: ${(entry.value as number).toFixed(1)}h`}
                       >
                         {breakdownData.map((_, i) => (
                           <Cell key={i} fill={COLORS[i % COLORS.length]} />
