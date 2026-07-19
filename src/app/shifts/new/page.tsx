@@ -149,14 +149,14 @@ function NewShiftForm() {
 
 async function getFortnightRangeForDate(supabase: ReturnType<typeof createClient>, dateStr: string) {
   const date = new Date(dateStr + 'T00:00:00');
-  const day = date.getUTCDay();
+  const day = date.getDay();
   const diff = day === 0 ? -6 : 1 - day;
   const start = new Date(date);
-  start.setUTCDate(date.getUTCDate() + diff);
-  start.setUTCHours(0, 0, 0, 0);
+  start.setDate(date.getDate() + diff);
+  start.setHours(0, 0, 0, 0);
   const end = new Date(start);
-  end.setUTCDate(start.getUTCDate() + 13);
-  end.setUTCHours(0, 0, 0, 0);
+  end.setDate(start.getDate() + 13);
+  end.setHours(0, 0, 0, 0);
 
   return {
     start: start.toISOString().split('T')[0],

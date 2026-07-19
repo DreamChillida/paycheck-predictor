@@ -11,16 +11,16 @@ export function classifyDay(date: Date, isPublicHoliday: boolean): DayType {
 
 export function getMonday(date: Date): Date {
   const d = new Date(date);
-  const day = d.getUTCDay();
+  const day = d.getDay();
   const diff = day === 0 ? -6 : 1 - day;
-  d.setUTCDate(d.getUTCDate() + diff);
-  d.setUTCHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
   return d;
 }
 
 export function getSundayAfter(date: Date): Date {
   const d = getMonday(date);
-  d.setUTCDate(d.getUTCDate() + 13);
+  d.setDate(d.getDate() + 13);
   return d;
 }
 
@@ -40,7 +40,7 @@ export function getFortnightRange(dateStr: string): { start: string; end: string
   const start = getMonday(date);
   const end = getSundayAfter(date);
   return {
-    start: start.toISOString().split('T')[0],
-    end: end.toISOString().split('T')[0],
+    start: format(start, 'yyyy-MM-dd'),
+    end: format(end, 'yyyy-MM-dd'),
   };
 }
