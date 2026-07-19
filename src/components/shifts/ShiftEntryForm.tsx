@@ -143,7 +143,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                 type="time"
                 value={s1s}
                 onChange={(e) => setS1s(e.target.value)}
-                className="w-full"
+                className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
               />
             </div>
             <div className="space-y-1.5 min-w-0">
@@ -153,7 +153,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                 type="time"
                 value={s1e}
                 onChange={(e) => setS1e(e.target.value)}
-                className="w-full"
+                className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
               />
             </div>
           </div>
@@ -171,7 +171,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                 type="time"
                 value={s1bs}
                 onChange={(e) => setS1bs(e.target.value)}
-                className="w-full"
+                className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
               />
             </div>
             <div className="space-y-1.5">
@@ -181,7 +181,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                 type="time"
                 value={s1be}
                 onChange={(e) => setS1be(e.target.value)}
-                className="w-full"
+                className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
               />
             </div>
           </div>
@@ -221,7 +221,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                   type="time"
                   value={s2s}
                   onChange={(e) => setS2s(e.target.value)}
-                  className="w-full"
+                  className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
                 />
               </div>
               <div className="space-y-1.5">
@@ -231,7 +231,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                   type="time"
                   value={s2e}
                   onChange={(e) => setS2e(e.target.value)}
-                  className="w-full"
+                  className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
                 />
               </div>
             </div>
@@ -248,7 +248,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                   type="time"
                   value={s2bs}
                   onChange={(e) => setS2bs(e.target.value)}
-                  className="w-full"
+                  className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
                 />
               </div>
               <div className="space-y-1.5">
@@ -258,7 +258,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                   type="time"
                   value={s2be}
                   onChange={(e) => setS2be(e.target.value)}
-                  className="w-full"
+                  className="w-full h-9 leading-none appearance-none [&::-webkit-datetime-edit]:p-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0"
                 />
               </div>
             </div>
