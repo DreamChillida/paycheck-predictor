@@ -29,6 +29,7 @@ export function NewFortnightDialog({ open, onOpenChange }: NewFortnightDialogPro
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [selectedDay, setSelectedDay] = useState<Date | undefined>();
   const [creating, setCreating] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   const range = startDate ? getFortnightRange(format(startDate, 'yyyy-MM-dd')) : null;
 
@@ -102,7 +103,7 @@ export function NewFortnightDialog({ open, onOpenChange }: NewFortnightDialogPro
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">{t.newFortnight.pickStart}</label>
-            <Popover>
+            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
               <PopoverTrigger className="w-full justify-start text-left font-normal flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm hover:bg-accent">
                 <CalendarIcon className="h-4 w-4 shrink-0" />
                 <span className="truncate">
@@ -113,7 +114,7 @@ export function NewFortnightDialog({ open, onOpenChange }: NewFortnightDialogPro
                 <Calendar
                   mode="single"
                   selected={startDate}
-                  onSelect={(d) => { setStartDate(d ? getMonday(d) : undefined); setSelectedDay(undefined); }}
+                  onSelect={(d) => { setStartDate(d ? getMonday(d) : undefined); setSelectedDay(undefined); setPopoverOpen(false); }}
                   disabled={[{ dayOfWeek: [0, 2, 3, 4, 5, 6] }]}
                   weekStartsOn={1}
                 />

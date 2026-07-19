@@ -1,4 +1,5 @@
 import type { DayType } from '@/types';
+import { format } from 'date-fns';
 
 export function classifyDay(date: Date, isPublicHoliday: boolean): DayType {
   if (isPublicHoliday) return 'public_holiday';
@@ -10,16 +11,16 @@ export function classifyDay(date: Date, isPublicHoliday: boolean): DayType {
 
 export function getMonday(date: Date): Date {
   const d = new Date(date);
-  const day = d.getDay();
+  const day = d.getUTCDay();
   const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
+  d.setUTCDate(d.getUTCDate() + diff);
+  d.setUTCHours(0, 0, 0, 0);
   return d;
 }
 
 export function getSundayAfter(date: Date): Date {
   const d = getMonday(date);
-  d.setDate(d.getDate() + 13);
+  d.setUTCDate(d.getUTCDate() + 13);
   return d;
 }
 
@@ -35,7 +36,7 @@ export function getWeekdayAllowanceUnits(minutes: number): number {
 }
 
 export function getFortnightRange(dateStr: string): { start: string; end: string } {
-  const date = new Date(dateStr);
+  const date = new Date(dateStr + 'T00:00:00');
   const start = getMonday(date);
   const end = getSundayAfter(date);
   return {
