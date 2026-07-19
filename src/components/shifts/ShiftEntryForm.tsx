@@ -102,6 +102,7 @@ export function ShiftEntryForm({ initialData, onSubmit, onCancel, fortnightRange
                       { before: new Date(fortnightRange.start + 'T00:00:00') },
                       { after: new Date(fortnightRange.end + 'T00:00:00') },
                     ] : undefined}
+                    weekStartsOn={1}
                   />
                 </PopoverContent>
               </Popover>
