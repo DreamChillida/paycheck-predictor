@@ -16,7 +16,7 @@ export const DEFAULT_RATES: PayRates = {
   public_holiday_overtime_rate: 58.16,
   overtime_threshold_hours: 7.6,
   saturday_ot_threshold_hours: 3.75,
-  no_break_threshold_minutes: 300,
+  no_break_threshold_minutes: 360,
   super_percent: 11.5,
   effective_from: '2026-04-27',
 };
